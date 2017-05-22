@@ -4,10 +4,12 @@ import java.io.IOException;
 
 import org.flint.Application;
 
-public class TicTacToeWeb {
+class TicTacToeWeb {
+    private static final int DEFAULT_PORT = 5000;
+
     public static void main(String[] args) throws IOException {
         Application app = new Application();
 
-        app.run(8080);
+        app.run(Arguments.getPort(args).getOrElse(DEFAULT_PORT));
     }
 }

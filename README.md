@@ -48,6 +48,14 @@ Or, you can run the assembled jar.
 > java -jar target/scala-2.11/tic-tac-toe-web-assembly-1.0.jar
 ```
 
+### Arguments
+The server takes one optional argument `[-p PORT]`.  Where `PORT` is the port the server will listen.
+
+```
+> sbt "run -p 5000"
+> java -jar target/scala-2.11/tic-tac-toe-web-assembly-1.0.jar -p 5000
+```
+
 Project Plan
 ------------
 
