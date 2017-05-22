@@ -25,7 +25,7 @@ public class ArgumentsTest {
 
     @Test
     @UseDataProvider("dataProviderValidArguments")
-    public void getPortShouldReturnThePortFromTheArguments(String[] args, Integer port) {
+    public void getPortShouldReturnThePortFromTheArguments(final String[] args, final Integer port) {
         assertThat(Arguments.getPort(args), equalTo(Option.of(port)));
     }
 
@@ -41,7 +41,7 @@ public class ArgumentsTest {
 
     @Test(expected=InvalidArgumentException.class)
     @UseDataProvider("dataProviderUnknownArguments")
-    public void getPortShouldThrowGivenUnknownArguments(String[] args) {
+    public void getPortShouldThrowGivenUnknownArguments(final String[] args) {
         Arguments.getPort(args);
     }
 
@@ -55,7 +55,7 @@ public class ArgumentsTest {
 
     @Test(expected=InvalidArgumentException.class)
     @UseDataProvider("dataProviderInvalidPortArguments")
-    public void getPortShouldThrowGivenInvalidPortArguments(String[] args) {
+    public void getPortShouldThrowGivenInvalidPortArguments(final String[] args) {
         Arguments.getPort(args);
     }
 
