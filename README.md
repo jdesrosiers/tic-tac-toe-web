@@ -52,13 +52,25 @@ Project Plan
 ------------
 
 ### Current Sprint
-**From** ??? **to** ???
+**From** 05-22-2017 **to** 05-26-2017
 
 | AV  | IP  | CP  | SP  | Description |
 |:---:|:---:|:---:|:---:|-------------|
+|     |  X  |     | 1.5 | Initialize website
+|  X  |     |     |  2  | CORS middleware (for API development)
+|  X  |     |     | 1.5 | New game - "New Game" button.  Prompts user to select players.
+|  X  |     |     | 1.5 | New game - API call to create a new game based on player selections.
 
 **Legend:** *AV* => Available, *IP* => In Progress, *CP* => Completed, *SP* => Story Points
+**Velocity** 6 SP/Week
 
 ### Backlog
 | SP  | Description |
 |:---:|-------------|
+| 2.75| Current board state - UI for board with current game state (X's turn, O wins, etc.)
+| 1.5 | Current board state - API call to get current board state
+| 1.5 | Play turn - Click board space to play
+| 1.5 | Play turn - API call to play turn
+| 3.75| Multiple Games - Add support for URL parameters to Flint
+| 1.5 | Multiple Games - UI for listing games
+| 2.75| Multiple Games - API call for listing games
