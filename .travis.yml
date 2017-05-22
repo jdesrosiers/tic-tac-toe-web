@@ -4,3 +4,4 @@ scala:
 jdk:
   - openjdk8
 dist: trusty
+before_script: bin/publish_local_dependencies.sh
