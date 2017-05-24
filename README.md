@@ -65,7 +65,7 @@ Project Plan
 | AV  | IP  | CP  | SP  | Description |
 |:---:|:---:|:---:|:---:|-------------|
 |     |     |  X  | 1.5 | Initialize website
-|     |  X  |     |  2  | CORS middleware (for API development)
+|     |     |  X  |  2  | CORS middleware (for API development)
 |  X  |     |     | 1.5 | New game - "New Game" button.  Prompts user to select players.
 |  X  |     |     | 1.5 | New game - API call to create a new game based on player selections.
 
