@@ -56,6 +56,10 @@ The server takes one optional argument `[-p PORT]`.  Where `PORT` is the port th
 > java -jar target/scala-2.11/tic-tac-toe-web-assembly-1.0.jar -p 5000
 ```
 
+API
+---
+The Tic Tac Toe API is driven by JSON Hyper-Schema.  You can browse the API by pointing you browser to the Jsonary JSON Browser.  (http://json-browser.s3-website-us-west-1.amazonaws.com/?url=http%3A//localhost%3A5000/tictactoe)[http://json-browser.s3-website-us-west-1.amazonaws.com/?url=http%3A//localhost%3A5000/tictactoe]
+
 Project Plan
 ------------
 
@@ -67,7 +71,7 @@ Project Plan
 |     |     |  X  | 1.5 | Initialize website
 |     |     |  X  |  2  | CORS middleware (for API development)
 |  X  |     |     | 1.5 | New game - "New Game" button.  Prompts user to select players.
-|  X  |     |     | 1.5 | New game - API call to create a new game based on player selections.
+|     |     |  X  | 1.5 | New game - API call to create a new game based on player selections.
 
 **Legend:** *AV* => Available, *IP* => In Progress, *CP* => Completed, *SP* => Story Points
 **Velocity** 6 SP/Week

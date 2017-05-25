@@ -1,42 +1,73 @@
 package tictactoeweb;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 
 import org.cobspec.controller.FileSystemController;
 import org.cobspec.controller.OptionsController;
 import org.flint.Application;
 import org.flint.response.Response;
 
-class TicTacToeWeb {
+public class TicTacToeWeb {
     private static final int DEFAULT_PORT = 5000;
 
-    public static void main(final String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ProcessingException {
+        Options options = new Options();
+        options.dataPath = Paths.get(".");
+        options.schemaPath = Paths.get("src/main");
+        options.webPath = Paths.get("web");
+        options.cors.allowOrigin = "http://json-browser.s3-website-us-west-1.amazonaws.com";
+        options.cors.exposeHeaders = "Link,Location";
+
         int port = Arguments.getPort(args).getOrElse(DEFAULT_PORT);
-        build(Paths.get("web")).run(port);
+        build(options).run(port);
     }
 
-    static Application build(final Path web) {
-        Application app = new Application();
+    static class Options {
+        Path dataPath;
+        Path schemaPath;
+        Path webPath;
+        final CorsMiddleware.Options cors = new CorsMiddleware.Options();
+    }
 
-        FileSystemController fileSystemController = new FileSystemController(web);
-        app.get("*", fileSystemController::get);
+    static Application build(Options options) throws IOException, ProcessingException {
+        final Application app = new Application();
 
-        CorsMiddleware.Options options = new CorsMiddleware.Options();
-        options.allowOrigin = "http://json-browser.s3-website-us-west-1.amazonaws.com";
-        enableCors(app, options);
+        ticTacToeApi(app, options.dataPath, options.schemaPath);
+        enableCors(app, options.cors);
+        serveWeb(app, options.webPath);
 
         return app;
     }
 
-    private static Application enableCors(final Application app, final CorsMiddleware.Options options) {
-        OptionsController optionsController = new OptionsController(app.getRouteMatcher());
+    static Application ticTacToeApi(final Application app, final Path dataPath, final Path schemaPath) throws IOException, ProcessingException {
+        final TicTacToeController ticTacToeController = new TicTacToeController(dataPath);
+        app.get("/tictactoe", ticTacToeController::index);
+        app.get("/tictactoe/*.json", ticTacToeController::get);
+        app.post("/tictactoe", ticTacToeController::create);
+
+        final SchemaController schemaController = new SchemaController(schemaPath);
+        app.get("/schema/*.json", schemaController::get);
+
+        return app;
+    }
+
+    static Application enableCors(final Application app, final CorsMiddleware.Options options) {
+        final OptionsController optionsController = new OptionsController(app.getRouteMatcher());
         app.options("*", optionsController::options);
 
-        CorsMiddleware corsMiddleware = new CorsMiddleware(options);
+        final CorsMiddleware corsMiddleware = new CorsMiddleware(options);
         app.after(corsMiddleware::cors);
+
+        return app;
+    }
+
+    static Application serveWeb(final Application app, final Path webPath) {
+        final FileSystemController fileSystemController = new FileSystemController(webPath);
+        app.get("*", fileSystemController::get);
 
         return app;
     }

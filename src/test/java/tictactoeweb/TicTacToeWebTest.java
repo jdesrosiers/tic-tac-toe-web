@@ -20,7 +20,7 @@ public class TicTacToeWebTest {
 
     @Test
     public void itShouldServeTheIndexPage() {
-        Application app = TicTacToeWeb.build(Paths.get("web"));
+        Application app = TicTacToeWeb.serveWeb(new Application(), Paths.get("web"));
         Request request = new Request(Method.GET, new OriginForm("/"));
 
         Response response = app.requestHandler(request);
@@ -32,7 +32,7 @@ public class TicTacToeWebTest {
 
     @Test
     public void itShouldServeAnyResourcesInTheWebFolder() {
-        Application app = TicTacToeWeb.build(Paths.get("web"));
+        Application app = TicTacToeWeb.serveWeb(new Application(), Paths.get("web"));
         Request request = new Request(Method.GET, new OriginForm("/app/index.js"));
 
         Response response = app.requestHandler(request);
