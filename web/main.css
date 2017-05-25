@@ -1,7 +1,12 @@
 body {
   padding-top: 50px;
 }
-.starter-template {
+
+.header {
   padding: 40px 15px;
   text-align: center;
+}
+
+#new-game {
+  width: 100%;
 }

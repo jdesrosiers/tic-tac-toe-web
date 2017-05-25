@@ -7,7 +7,6 @@ import java.nio.file.Paths;
 import org.cobspec.controller.FileSystemController;
 import org.cobspec.controller.OptionsController;
 import org.flint.Application;
-import org.flint.response.Response;
 
 public class TicTacToeWeb {
     private static final int DEFAULT_PORT = 5000;
