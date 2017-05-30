@@ -10,5 +10,7 @@ libraryDependencies ++= Seq(
   "jdesrosiers" %% "http-server" % "1.0",
   "jdesrosiers" %% "tic-tac-toe" % "1.0",
   "junit" % "junit" % "4.12"  % "test",
+  "org.hamcrest" % "hamcrest-all" % "1.3" % "test",
+  "com.tngtech.java" % "junit-dataprovider" % "1.12.0" % "test",
   "com.novocode" % "junit-interface" % "0.11" % "test"
 )

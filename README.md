@@ -48,6 +48,14 @@ Or, you can run the assembled jar.
 > java -jar target/scala-2.11/tic-tac-toe-web-assembly-1.0.jar
 ```
 
+### Arguments
+The server takes one optional argument `[-p PORT]`.  Where `PORT` is the port the server will listen.
+
+```
+> sbt "run -p 5000"
+> java -jar target/scala-2.11/tic-tac-toe-web-assembly-1.0.jar -p 5000
+```
+
 Project Plan
 ------------
 
@@ -56,8 +64,8 @@ Project Plan
 
 | AV  | IP  | CP  | SP  | Description |
 |:---:|:---:|:---:|:---:|-------------|
-|     |  X  |     | 1.5 | Initialize website
-|  X  |     |     |  2  | CORS middleware (for API development)
+|     |     |  X  | 1.5 | Initialize website
+|     |  X  |     |  2  | CORS middleware (for API development)
 |  X  |     |     | 1.5 | New game - "New Game" button.  Prompts user to select players.
 |  X  |     |     | 1.5 | New game - API call to create a new game based on player selections.
 
