@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import com.github.fge.jsonschema.core.exceptions.ProcessingException;
-
 import org.cobspec.controller.FileSystemController;
 import org.cobspec.controller.OptionsController;
 import org.flint.Application;
@@ -14,7 +12,7 @@ import org.flint.response.Response;
 public class TicTacToeWeb {
     private static final int DEFAULT_PORT = 5000;
 
-    public static void main(String[] args) throws IOException, ProcessingException {
+    public static void main(String[] args) throws IOException {
         Options options = new Options();
         options.dataPath = Paths.get(".");
         options.schemaPath = Paths.get("src/main");
@@ -33,7 +31,7 @@ public class TicTacToeWeb {
         final CorsMiddleware.Options cors = new CorsMiddleware.Options();
     }
 
-    static Application build(Options options) throws IOException, ProcessingException {
+    static Application build(Options options) {
         final Application app = new Application();
 
         ticTacToeApi(app, options.dataPath, options.schemaPath);
@@ -43,13 +41,14 @@ public class TicTacToeWeb {
         return app;
     }
 
-    static Application ticTacToeApi(final Application app, final Path dataPath, final Path schemaPath) throws IOException, ProcessingException {
-        final TicTacToeController ticTacToeController = new TicTacToeController(dataPath);
+    static Application ticTacToeApi(final Application app, final Path dataPath, final Path schemaPath) {
+        final SchemaStore schemaStore = new SchemaStore(schemaPath);
+        final TicTacToeController ticTacToeController = new TicTacToeController(dataPath, schemaStore);
         app.get("/tictactoe", ticTacToeController::index);
         app.get("/tictactoe/*.json", ticTacToeController::get);
         app.post("/tictactoe", ticTacToeController::create);
 
-        final SchemaController schemaController = new SchemaController(schemaPath);
+        final SchemaController schemaController = new SchemaController(schemaStore);
         app.get("/schema/*.json", schemaController::get);
 
         return app;
