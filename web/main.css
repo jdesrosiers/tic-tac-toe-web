@@ -8,5 +8,34 @@ body {
 }
 
 #new-game {
+  width: 600px;
+}
+
+.create-game-form {
+  padding-top: 2em;
+  width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#play-button {
   width: 100%;
+}
+
+.board {
+  width: 450px;
+  padding: 2em;
+}
+
+.cell {
+  height: 135px;
+  padding: 1em;
+}
+
+.boundry-right {
+  border-right: 1em solid black;
+}
+
+.boundry-bottom {
+  border-bottom: 1em solid black;
 }

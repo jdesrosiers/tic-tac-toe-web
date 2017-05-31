@@ -8,12 +8,14 @@ public class Game {
     private String playerX;
     private String playerO;
     private Board board;
+    private String state;
 
-    public Game(final String playerX, final String playerO, final Board board) {
+    public Game(final String playerX, final String playerO, final Board board, final String state) {
         this.id = 1;
         this.playerX = playerX;
         this.playerO = playerO;
         this.board = board;
+        this.state = state;
     }
 
     public int getId() {
@@ -42,5 +44,13 @@ public class Game {
 
     public void setBoard(final Board board) {
         this.board = board;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(final String state) {
+        this.state = state;
     }
 }

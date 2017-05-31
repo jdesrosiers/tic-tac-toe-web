@@ -1,1 +1,1 @@
-{"id":1,"playerX":"human","playerO":"minimax","board":{"x":[],"o":[]}}
+{"id":1,"playerX":"human","playerO":"minimax","board":{"player":"X","x":[],"o":[]},"state":"inProgress"}
