@@ -12,31 +12,29 @@ import org.flint.response.Response;
 public class TicTacToeWeb {
     private static final int DEFAULT_PORT = 5000;
 
-    public static void main(String[] args) throws IOException {
-        Options options = new Options();
-        options.dataPath = Paths.get(".");
-        options.schemaPath = Paths.get("src/main");
-        options.webPath = Paths.get("web");
-        options.cors.allowOrigin = "http://json-browser.s3-website-us-west-1.amazonaws.com";
-        options.cors.exposeHeaders = "Link,Location";
+    public static void main(final String[] args) throws IOException {
+        final CorsOptions corsOptions = new CorsOptions.Builder()
+            .allowOrigin("http://json-browser.s3-website-us-west-1.amazonaws.com")
+            .exposeHeaders("Link,Location")
+            .build();
+
+        final ApplicationOptions options = new ApplicationOptions.Builder()
+            .dataPath(Paths.get("."))
+            .schemaPath(Paths.get("src/main"))
+            .webPath(Paths.get("web"))
+            .cors(corsOptions)
+            .build();
 
         int port = Arguments.getPort(args).getOrElse(DEFAULT_PORT);
         build(options).run(port);
     }
 
-    static class Options {
-        Path dataPath;
-        Path schemaPath;
-        Path webPath;
-        final CorsMiddleware.Options cors = new CorsMiddleware.Options();
-    }
-
-    static Application build(Options options) {
+    static Application build(final ApplicationOptions options) {
         final Application app = new Application();
 
-        ticTacToeApi(app, options.dataPath, options.schemaPath);
-        enableCors(app, options.cors);
-        serveWeb(app, options.webPath);
+        ticTacToeApi(app, options.getDataPath(), options.getSchemaPath());
+        enableCors(app, options.getCors());
+        serveWeb(app, options.getWebPath());
 
         return app;
     }
@@ -54,7 +52,7 @@ public class TicTacToeWeb {
         return app;
     }
 
-    static Application enableCors(final Application app, final CorsMiddleware.Options options) {
+    static Application enableCors(final Application app, final CorsOptions options) {
         final OptionsController optionsController = new OptionsController(app.getRouteMatcher());
         app.options("*", optionsController::options);
 
