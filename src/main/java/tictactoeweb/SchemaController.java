@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import javaslang.jackson.datatype.JavaslangModule;
 
-import org.cobspec.controller.FileSystemController;
 import org.flint.exception.NotFoundHttpException;
 import org.flint.request.Request;
 import org.flint.response.Response;
