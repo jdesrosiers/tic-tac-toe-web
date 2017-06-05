@@ -58,7 +58,7 @@ The server takes one optional argument `[-p PORT]`.  Where `PORT` is the port th
 
 API
 ---
-The Tic Tac Toe API is driven by JSON Hyper-Schema.  You can browse the API by pointing you browser to the Jsonary JSON Browser.  (http://json-browser.s3-website-us-west-1.amazonaws.com/?url=http%3A//localhost%3A5000/tictactoe)[http://json-browser.s3-website-us-west-1.amazonaws.com/?url=http%3A//localhost%3A5000/tictactoe]
+The Tic Tac Toe API is driven by JSON Hyper-Schema.  You can browse the API by pointing you browser to the Jsonary JSON Browser.  [http://json-browser.s3-website-us-west-1.amazonaws.com/?url=http%3A//localhost%3A5000/tictactoe](http://json-browser.s3-website-us-west-1.amazonaws.com/?url=http%3A//localhost%3A5000/tictactoe)
 
 Project Plan
 ------------
@@ -68,17 +68,16 @@ Project Plan
 
 | AV  | IP  | CP  | SP  | Description |
 |:---:|:---:|:---:|:---:|-------------|
-|     |     |  X  | 2.75| Current board state - UI for board with current game state (X's turn, O wins, etc.)
-|     |     |  X  | 1.5 | Current board state - API call to get current board state
+|  X  |     |     | 1.5 | Play turn - Click board space to play
+|  X  |     |     | 1.5 | Play turn - API call to play turn
 
 **Legend:** *AV* => Available, *IP* => In Progress, *CP* => Completed, *SP* => Story Points
-**Velocity** 3 SP/Week
+
+**Velocity:** 6 SP/Week
 
 ### Backlog
 | SP  | Description |
 |:---:|-------------|
-| 1.5 | Play turn - Click board space to play
-| 1.5 | Play turn - API call to play turn
 | 3.75| Multiple Games - Add support for URL parameters to Flint
 | 1.5 | Multiple Games - UI for listing games
 | 2.75| Multiple Games - API call for listing games
