@@ -1,4 +1,4 @@
-package tictactoeweb;
+package tictactoeweb.schema;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,11 +11,13 @@ import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 import com.github.fge.jsonschema.main.JsonSchema;
 import com.github.fge.jsonschema.main.JsonSchemaFactory;
 
-class SchemaStore {
+import json.Json;
+
+public class SchemaStore {
     private final Path storePath;
     private final JsonSchemaFactory factory;
 
-    SchemaStore(Path storePath) {
+    public SchemaStore(Path storePath) {
         this.storePath = storePath;
         this.factory = JsonSchemaFactory.byDefault();
     }

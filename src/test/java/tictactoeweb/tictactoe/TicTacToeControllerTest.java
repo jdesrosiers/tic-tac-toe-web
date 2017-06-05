@@ -1,4 +1,4 @@
-package tictactoeweb;
+package tictactoeweb.tictactoe;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -18,6 +18,8 @@ import org.flint.request.OriginForm;
 import org.flint.request.Request;
 import org.flint.response.Response;
 import org.flint.response.StatusCode;
+
+import tictactoeweb.schema.SchemaStore;
 
 public class TicTacToeControllerTest {
 

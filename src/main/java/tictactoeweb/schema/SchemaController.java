@@ -1,4 +1,4 @@
-package tictactoeweb;
+package tictactoeweb.schema;
 
 import java.io.IOException;
 import java.nio.file.Path;

@@ -1,6 +1,6 @@
-package tictactoeweb;
+package flint.cors;
 
-class CorsOptions {
+public class CorsOptions {
     private String allowMethods;
     private String allowHeaders;
     private String maxAge;
@@ -34,7 +34,7 @@ class CorsOptions {
         return exposeHeaders;
     }
 
-    static class Builder {
+    public static class Builder {
         private String allowMethods;
         private String allowHeaders;
         private String maxAge;

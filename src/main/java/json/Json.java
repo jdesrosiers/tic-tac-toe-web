@@ -1,4 +1,4 @@
-package tictactoeweb;
+package json;
 
 import java.io.InputStream;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import javaslang.jackson.datatype.JavaslangModule;
 
-class Json {
+public class Json {
     private static final ObjectMapper mapper = new ObjectMapper()
         .registerModule(new JavaslangModule());
 

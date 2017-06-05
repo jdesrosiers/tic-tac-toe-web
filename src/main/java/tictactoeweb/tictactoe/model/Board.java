@@ -1,4 +1,4 @@
-package tictactoeweb.model;
+package tictactoeweb.tictactoe.model;
 
 import javaslang.collection.List;
 

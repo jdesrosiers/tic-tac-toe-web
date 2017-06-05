@@ -1,4 +1,4 @@
-package tictactoeweb;
+package tictactoeweb.tictactoe;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,10 +19,12 @@ import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 import com.github.fge.jsonschema.core.report.ProcessingReport;
 import com.github.fge.jsonschema.main.JsonSchema;
 
-import tictactoeweb.model.CreateGame;
-import tictactoeweb.model.Game;
+import tictactoeweb.schema.SchemaStore;
+import tictactoeweb.tictactoe.model.CreateGame;
+import tictactoeweb.tictactoe.model.Game;
+import json.Json;
 
-class TicTacToeController {
+public class TicTacToeController {
     private final FileSystemController fileSystemController;
     private final SchemaStore schemaStore;
 

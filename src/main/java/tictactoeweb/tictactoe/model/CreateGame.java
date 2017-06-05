@@ -1,4 +1,4 @@
-package tictactoeweb.model;
+package tictactoeweb.tictactoe.model;
 
 public class CreateGame {
     private String playerX;

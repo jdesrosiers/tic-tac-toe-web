@@ -1,4 +1,4 @@
-package tictactoeweb;
+package flint.cors;
 
 import java.util.Arrays;
 
@@ -9,14 +9,14 @@ import org.flint.request.Method;
 import org.flint.request.Request;
 import org.flint.response.Response;
 
-class CorsMiddleware {
+public class CorsMiddleware {
     private final CorsOptions options;
 
-    CorsMiddleware(final CorsOptions options) {
+    public CorsMiddleware(final CorsOptions options) {
         this.options = options;
     }
 
-    Response cors(final Request request, final Response response) {
+    public Response cors(final Request request, final Response response) {
         return Option.of(response)
             .filter(r -> isCorsRequest(request))
             .flatMap(r -> handleCorsRequest(request, r))
