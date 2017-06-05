@@ -10,6 +10,8 @@ import java.nio.file.Paths;
 
 import javaslang.control.Option;
 
+import com.github.fge.jsonschema.core.exceptions.ProcessingException;
+
 import org.flint.exception.NotFoundHttpException;
 import org.flint.request.Method;
 import org.flint.request.OriginForm;
@@ -27,7 +29,7 @@ public class SchemaControllerTest {
     }
 
     @Test
-    public void itShouldSetTheContentTypeToApplicationSchemaJson() throws IOException {
+    public void itShouldSetTheContentTypeToApplicationSchemaJson() throws IOException, ProcessingException {
         final Request request = new Request(Method.GET, new OriginForm("/schema/test.json"));
         final Response response = schemaController.get(request);
 
@@ -35,7 +37,7 @@ public class SchemaControllerTest {
     }
 
     @Test(expected=NotFoundHttpException.class)
-    public void itShould404IfTheSchemaDoesntExist() throws IOException {
+    public void itShould404IfTheSchemaDoesntExist() throws IOException, ProcessingException {
         final Request request = new Request(Method.GET, new OriginForm("/schema/notaschema.json"));
         schemaController.get(request);
     }

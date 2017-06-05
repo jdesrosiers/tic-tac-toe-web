@@ -5,9 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.JsonNode;
-import javaslang.jackson.datatype.JavaslangModule;
+import scala.Symbol;
 
 import javaslang.control.Try;
 
@@ -17,14 +15,14 @@ import org.flint.request.Request;
 import org.flint.response.Response;
 import org.flint.response.StatusCode;
 
+import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 import com.github.fge.jsonschema.core.report.ProcessingReport;
+import com.github.fge.jsonschema.main.JsonSchema;
 
 import tictactoeweb.model.CreateGame;
+import tictactoeweb.model.Game;
 
 class TicTacToeController {
-    private static final ObjectMapper mapper = new ObjectMapper()
-        .registerModule(new JavaslangModule());
-
     private final FileSystemController fileSystemController;
     private final SchemaStore schemaStore;
 
@@ -41,17 +39,14 @@ class TicTacToeController {
         return response;
     }
 
-    public Response create(final Request request) throws IOException {
-        final JsonNode createGame = mapper.readTree(request.getBody());
-
-        schemaStore.get("/schema/create.json")
-            .flatMap(schema -> Try.of(() -> schema.validate(createGame)))
+    public Response create(final Request request) throws IOException, ProcessingException {
+        final JsonSchema schema = schemaStore.getSchema("/schema/create.json");
+        Try.of(() -> schema.validate(Json.parse(request.getBody())))
             .filter(ProcessingReport::isSuccess)
             .getOrElseThrow(() -> new BadRequestHttpException());
 
-        final CreateGame create = mapper.readValue(request.getBody(), CreateGame.class);
-
-        final String json = mapper.writer().writeValueAsString(create.toGame());
+        final CreateGame create = Json.parseAs(request.getBody(), CreateGame.class);
+        final String json = Json.stringify(create.toGame());
         final Response response = fileSystemController.write(request, Paths.get(request.getPath() + "/1.json"), json);
         response.setStatusCode(StatusCode.SEE_OTHER);
 

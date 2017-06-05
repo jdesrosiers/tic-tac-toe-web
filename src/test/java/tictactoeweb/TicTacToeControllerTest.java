@@ -10,6 +10,8 @@ import java.nio.file.Paths;
 
 import javaslang.control.Option;
 
+import com.github.fge.jsonschema.core.exceptions.ProcessingException;
+
 import org.flint.exception.BadRequestHttpException;
 import org.flint.request.Method;
 import org.flint.request.OriginForm;
@@ -35,7 +37,7 @@ public class TicTacToeControllerTest {
     }
 
     @Test
-    public void itShouldCreateANewGame() throws IOException {
+    public void itShouldCreateANewGame() throws IOException, ProcessingException {
         final TicTacToeController ticTacToeController = getController(Paths.get("src/test/resources"));
         final Request request = new Request(Method.POST, new OriginForm("/tictactoe"));
         request.setBody("{ \"playerX\": \"human\", \"playerO\": \"minimax\" }");
@@ -46,7 +48,7 @@ public class TicTacToeControllerTest {
     }
 
     @Test(expected=BadRequestHttpException.class)
-    public void itShould400IfCreateGameRequestIsInvalid() throws IOException {
+    public void itShould400IfCreateGameRequestIsInvalid() throws IOException, ProcessingException {
         final TicTacToeController ticTacToeController = getController(Paths.get("src/test/resources"));
         final Request request = new Request(Method.POST, new OriginForm("/tictactoe"));
         request.setBody("{ \"playerX\": \"invalid\", \"playerO\": \"minimax\" }");

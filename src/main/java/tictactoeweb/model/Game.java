@@ -1,8 +1,5 @@
 package tictactoeweb.model;
 
-import javaslang.collection.HashMap;
-import javaslang.collection.List;
-
 public class Game {
     private int id;
     private String playerX;
