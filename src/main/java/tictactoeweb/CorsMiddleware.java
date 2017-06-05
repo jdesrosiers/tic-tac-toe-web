@@ -10,9 +10,9 @@ import org.flint.request.Request;
 import org.flint.response.Response;
 
 class CorsMiddleware {
-    Options options;
+    private final CorsOptions options;
 
-    CorsMiddleware(final Options options) {
+    CorsMiddleware(final CorsOptions options) {
         this.options = options;
     }
 
@@ -55,7 +55,7 @@ class CorsMiddleware {
     }
 
     private boolean isMethodAllowed(final Request request, final Response response) {
-        String allowMethods = Option.of(options.allowMethods)
+        String allowMethods = Option.of(options.getAllowMethods())
             .getOrElse(() -> response.getHeader("Allow").get());
 
         return request.getHeader("Access-Control-Request-Method")
@@ -65,7 +65,7 @@ class CorsMiddleware {
 
     private boolean areHeadersAllowed(final Request request, final Response response) {
         String requestHeaders = request.getHeader("Access-Control-Request-Headers").getOrElse("");
-        String allowedHeaders = Option.of(options.allowHeaders)
+        String allowedHeaders = Option.of(options.getAllowHeaders())
             .getOrElse(requestHeaders);
 
         return explode(allowedHeaders, ",")
@@ -76,10 +76,10 @@ class CorsMiddleware {
         String origin = request.getHeader("Origin").get();
 
         String allowOrigin;
-        if ("*".equals(options.allowOrigin)) {
+        if ("*".equals(options.getAllowOrigin())) {
             allowOrigin = origin;
         } else {
-            allowOrigin = Option.of(options.allowOrigin)
+            allowOrigin = Option.of(options.getAllowOrigin())
                 .map(origins -> explode(origins, " "))
                 .getOrElse(List::empty)
                 .find(host -> host.equals(origin))
@@ -106,21 +106,21 @@ class CorsMiddleware {
     }
 
     private Response setMaxAge(final Request request, final Response response) {
-        Option.of(options.maxAge)
+        Option.of(options.getMaxAge())
             .peek(maxAge -> response.setHeader("Access-Control-Max-Age", maxAge));
 
         return response;
     }
 
     private Response setExposeHeaders(final Request request, final Response response) {
-        Option.of(options.exposeHeaders)
+        Option.of(options.getExposeHeaders())
             .peek(exposeHeaders -> response.setHeader("Access-Control-Expose-Headers", exposeHeaders));
 
         return response;
     }
 
     private Response setAllowCredentials(final Request request, final Response response) {
-        Option.of(options.allowCredentials)
+        Option.of(options.getAllowCredentials())
             .peek(allowCredentials -> response.setHeader("Access-Control-Allow-Credentials", "true"));
 
         return response;
@@ -128,14 +128,5 @@ class CorsMiddleware {
 
     private List<String> explode(final String subject, final String delimiter) {
         return List.ofAll(Arrays.asList(subject.split(delimiter)));
-    }
-
-    public static class Options {
-        String allowMethods;
-        String allowHeaders;
-        String maxAge;
-        String allowOrigin;
-        Boolean allowCredentials;
-        String exposeHeaders;
     }
 }

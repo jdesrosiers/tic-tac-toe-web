@@ -7,7 +7,9 @@ version := "1.0"
 scalaVersion := "2.11.7"
 
 libraryDependencies ++= Seq(
+  "com.github.fge" % "json-schema-validator" % "2.2.6",
   "io.javaslang" % "javaslang" % "2.0.6",
+  "io.javaslang" % "javaslang-jackson" % "2.0.5",
   "jdesrosiers" %% "http-server" % "1.0",
   "jdesrosiers" %% "tic-tac-toe" % "1.0",
 

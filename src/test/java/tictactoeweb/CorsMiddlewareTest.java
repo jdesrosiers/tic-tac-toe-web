@@ -22,12 +22,8 @@ import org.flint.Application;
 @RunWith(DataProviderRunner.class)
 public class CorsMiddlewareTest {
 
-    private Application app;
-    private CorsMiddleware.Options options;
-
-    @Before
-    public void setUp() {
-        app = new Application();
+    public Application getApp(CorsOptions options) {
+        Application app = new Application();
 
         app.get("/foo", request -> {
             Response response = Response.create();
@@ -37,13 +33,17 @@ public class CorsMiddlewareTest {
         OptionsController optionsController = new OptionsController(app.getRouteMatcher());
         app.options("*", optionsController::options);
 
-        this.options = new CorsMiddleware.Options();
         CorsMiddleware corsMiddleware = new CorsMiddleware(options);
         app.after(corsMiddleware::cors);
+
+        return app;
     }
 
     @Test
     public void itShouldIgnoreAnythingThatIsntACorsRequest() {
+        CorsOptions options = new CorsOptions.Builder()
+            .build();
+        Application app = getApp(options);
         Request request = new Request(Method.OPTIONS, new OriginForm("/foo"));
 
         Response response = app.requestHandler(request);
@@ -53,8 +53,11 @@ public class CorsMiddlewareTest {
 
     @Test
     public void itShouldHandlePreflight() {
-        options.allowOrigin = "*";
-        options.maxAge = "15";
+        CorsOptions options = new CorsOptions.Builder()
+            .allowOrigin("*")
+            .maxAge("15")
+            .build();
+        Application app = getApp(options);
 
         Request request = new Request(Method.OPTIONS, new OriginForm("/foo"));
         request.setHeader("Origin", "http://www.foo.com");
@@ -74,6 +77,10 @@ public class CorsMiddlewareTest {
 
     @Test
     public void itShouldIgnoreUnsupportedCorsPreFlightRequests() {
+        CorsOptions options = new CorsOptions.Builder()
+            .build();
+        Application app = getApp(options);
+
         Request request = new Request(Method.OPTIONS, new OriginForm("/foo"));
         request.setHeader("Origin", "http://www.foo.com");
         request.setHeader("Access-Control-Request-Method", "POST");
@@ -102,7 +109,10 @@ public class CorsMiddlewareTest {
     @Test
     @UseDataProvider("dataProviderAllowOrigin")
     public void itShouldEchoTheOriginInAllowOriginIfOriginIsAllowed(String origin) {
-        options.allowOrigin = origin;
+        CorsOptions options = new CorsOptions.Builder()
+            .allowOrigin(origin)
+            .build();
+        Application app = getApp(options);
 
         Request request = new Request(Method.GET, new OriginForm("/foo"));
         request.setHeader("Origin", "http://www.foo.com");
@@ -120,8 +130,11 @@ public class CorsMiddlewareTest {
 
     @Test
     public void itShouldHaveNullInAllowOriginIfOriginIsNotAllowed() {
-        options.allowOrigin = "http://www.bar.com";
-        options.maxAge = "15";
+        CorsOptions options = new CorsOptions.Builder()
+            .allowOrigin("http://www.bar.com")
+            .maxAge("15")
+            .build();
+        Application app = getApp(options);
 
         Request request = new Request(Method.OPTIONS, new OriginForm("/foo"));
         request.setHeader("Origin", "http://www.foo.com");
@@ -149,9 +162,12 @@ public class CorsMiddlewareTest {
     @Test
     @UseDataProvider("dataProviderAllowMethodsOption")
     public void itShouldAllowMethodsInTheAllowMethodsOption(String allowMethods) {
-        options.allowOrigin = "http://www.foo.com";
-        options.allowMethods = allowMethods;
-        options.maxAge = "15";
+        CorsOptions options = new CorsOptions.Builder()
+            .allowOrigin("http://www.foo.com")
+            .allowMethods(allowMethods)
+            .maxAge("15")
+            .build();
+        Application app = getApp(options);
 
         Request request = new Request(Method.OPTIONS, new OriginForm("/foo"));
         request.setHeader("Origin", "http://www.foo.com");
@@ -170,9 +186,12 @@ public class CorsMiddlewareTest {
 
     @Test
     public void itShouldNotAllowMethodsNotInTheAllowMethodsOption() {
-        options.allowOrigin = "http://www.bar.com";
-        options.allowMethods = "GET";
-        options.maxAge = "15";
+        CorsOptions options = new CorsOptions.Builder()
+            .allowOrigin("http://www.bar.com")
+            .allowMethods("GET")
+            .maxAge("15")
+            .build();
+        Application app = getApp(options);
 
         Request request = new Request(Method.OPTIONS, new OriginForm("/foo"));
         request.setHeader("Origin", "http://www.foo.com");
@@ -191,7 +210,10 @@ public class CorsMiddlewareTest {
 
     @Test
     public void itShouldIgnoreIfHeadersThatArentAllowedAreRequested() {
-        options.allowHeaders = "";
+        CorsOptions options = new CorsOptions.Builder()
+            .allowHeaders("")
+            .build();
+        Application app = getApp(options);
 
         Request request = new Request(Method.OPTIONS, new OriginForm("/foo"));
         request.setHeader("Origin", "http://www.foo.com");
@@ -211,9 +233,12 @@ public class CorsMiddlewareTest {
 
     @Test
     public void itShouldSupportExposingHeaders() {
-        options.allowOrigin = "http://www.foo.com";
-        options.allowCredentials = true;
-        options.exposeHeaders = "Foo-Bar,Baz";
+        CorsOptions options = new CorsOptions.Builder()
+            .allowOrigin("http://www.foo.com")
+            .allowCredentials(true)
+            .exposeHeaders("Foo-Bar,Baz")
+            .build();
+        Application app = getApp(options);
 
         Request request = new Request(Method.GET, new OriginForm("/foo"));
         request.setHeader("Origin", "http://www.foo.com");

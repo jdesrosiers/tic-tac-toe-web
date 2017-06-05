@@ -1,0 +1,24 @@
+{
+    "title": "Create Game",
+    "type": "object",
+    "properties": {
+        "playerX": {
+            "allOf": [{ "$ref": "#/definitions/player" }],
+            "default": "human"
+        },
+        "playerO": {
+            "allOf": [{ "$ref": "#/definitions/player" }],
+            "default": "minimax"
+        }
+    },
+    "required": ["playerX", "playerO"],
+    "definitions": {
+        "player": {
+            "type": "string",
+            "anyOf": [
+                { "title": "Human Player", "pattern": "^human$" },
+                { "title": "Minimax Player", "pattern": "^minimax(,\\d)?$" }
+            ]
+        }
+    }
+}
