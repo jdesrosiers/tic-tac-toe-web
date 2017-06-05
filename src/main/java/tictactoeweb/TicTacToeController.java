@@ -61,6 +61,7 @@ class TicTacToeController {
     public Response get(final Request request) throws IOException {
         final Response response = fileSystemController.get(request);
         response.setHeader("Content-Type", "application/json");
+        response.setHeader("Link", "</schema/game.json>; rel=describedby");
 
         return response;
     }

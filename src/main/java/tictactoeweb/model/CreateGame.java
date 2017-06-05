@@ -21,6 +21,6 @@ public class CreateGame {
     }
 
     public Game toGame() {
-        return new Game(playerX, playerO, new Board());
+        return new Game(playerX, playerO, new Board(), "inProgress");
     }
 }

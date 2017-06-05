@@ -1,0 +1,21 @@
+<div class="header">
+  <h1><%- heading %></h1>
+  <div class="container board">
+    <div class="row boundry-bottom">
+      <div class="col-md-4 cell boundry-right"><img src="/img/<%= board.topLeft %>.png"></div>
+      <div class="col-md-4 cell boundry-right"><img src="/img/<%= board.topMiddle %>.png"></div>
+      <div class="col-md-4 cell"><img src="/img/<%= board.topRight %>.png"></div>
+    </div>
+    <div class="row boundry-bottom">
+      <div class="col-md-4 cell boundry-right"><img src="/img/<%= board.middleLeft %>.png"></div>
+      <div class="col-md-4 cell boundry-right"><img src="/img/<%= board.center %>.png"></div>
+      <div class="col-md-4 cell"><img src="/img/<%= board.middleRight %>.png"></div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 cell boundry-right"><img src="/img/<%= board.bottomLeft %>.png"></div>
+      <div class="col-md-4 cell boundry-right"><img src="/img/<%= board.bottomMiddle %>.png"></div>
+      <div class="col-md-4 cell"><img src="/img/<%= board.bottomRight %>.png"></div>
+    </div>
+  </div>
+  <button id="new-game" type="button" class="btn btn-default">New Game</button>
+</div>

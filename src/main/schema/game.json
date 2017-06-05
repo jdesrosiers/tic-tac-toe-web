@@ -1,17 +1,12 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Tic Tac Toe",
-  "description": "A Tic Tac Toe game API",
   "links": [
     {
       "rel": "urn:jdesrosiers:tictactoe:create",
       "href": "/tictactoe",
       "method": "POST",
       "schema": { "$ref": "/schema/create.json" }
-    },
-    {
-      "rel": "urn:jdesrosiers:tictactoe:game",
-      "href": "/tictactoe/1.json"
     }
   ]
 }
+
