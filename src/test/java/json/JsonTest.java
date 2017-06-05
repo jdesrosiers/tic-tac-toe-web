@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import javaslang.collection.List;
+import scala.Symbol;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -35,9 +35,9 @@ public class JsonTest {
     }
 
     @Test
-    public void itShouldParseJavaslangStructures() throws IOException {
-        Foos foos = Json.parseAs("{\"foos\":[\"bar\"]}", Foos.class);
-        assertThat(foos.getFoos(), equalTo(List.of("bar")));
+    public void itCanParseStringsAsScalaSymbols() throws IOException {
+        FooSymbol fooSymbol = Json.parseAs("{\"foo\":\"bar\"}", FooSymbol.class);
+        assertThat(fooSymbol.getFoo(), equalTo(Symbol.apply("bar")));
     }
 
     @Test
@@ -62,10 +62,10 @@ public class JsonTest {
     }
 
     @Test
-    public void itShouldStrignifyJavaslangStructures() throws IOException {
-        String json = "{\"foos\":[\"bar\"]}";
-        Foos foos = Json.parseAs(json, Foos.class);
-        assertThat(Json.stringify(foos), equalTo(json));
+    public void itShouldStrignifyScalaSymbolsAsStrings() throws IOException {
+        String json = "{\"foo\":\"bar\"}";
+        FooSymbol fooSymbol = Json.parseAs(json, FooSymbol.class);
+        assertThat(Json.stringify(fooSymbol), equalTo(json));
     }
 
     private static class Foo {
@@ -80,15 +80,15 @@ public class JsonTest {
         }
     }
 
-    private static class Foos {
-        private List<String> foos;
+    private static class FooSymbol {
+        private Symbol foo = Symbol.apply("bar");
 
-        public List<String> getFoos() {
-            return foos;
+        public Symbol getFoo() {
+            return foo;
         }
 
-        public void setFoos(List<String> foos) {
-            this.foos = foos;
+        public void setFoo(Symbol foo) {
+            this.foo = foo;
         }
     }
 

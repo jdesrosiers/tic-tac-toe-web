@@ -1,18 +1,23 @@
 package tictactoeweb.tictactoe.model;
 
+import tictactoe.TicTacToe;
+import tictactoe.Board;
+
 public class Game {
     private int id;
     private String playerX;
     private String playerO;
     private Board board;
-    private String state;
 
-    public Game(final String playerX, final String playerO, final Board board, final String state) {
+    private TicTacToe tictactoe;
+
+    public Game(final String playerX, final String playerO) {
         this.id = 1;
         this.playerX = playerX;
         this.playerO = playerO;
-        this.board = board;
-        this.state = state;
+        this.board = Board.apply(Board.apply$default$1(), Board.apply$default$2(), Board.apply$default$3());
+
+        this.tictactoe = TicTacToe.classic();
     }
 
     public int getId() {
@@ -44,10 +49,6 @@ public class Game {
     }
 
     public String getState() {
-        return state;
-    }
-
-    public void setState(final String state) {
-        this.state = state;
+        return tictactoe.state(board).name();
     }
 }

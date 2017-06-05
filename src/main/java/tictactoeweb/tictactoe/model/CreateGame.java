@@ -1,5 +1,7 @@
 package tictactoeweb.tictactoe.model;
 
+import tictactoe.Board;
+
 public class CreateGame {
     private String playerX;
     private String playerO;
@@ -21,6 +23,6 @@ public class CreateGame {
     }
 
     public Game toGame() {
-        return new Game(playerX, playerO, new Board(), "inProgress");
+        return new Game(playerX, playerO);
     }
 }
