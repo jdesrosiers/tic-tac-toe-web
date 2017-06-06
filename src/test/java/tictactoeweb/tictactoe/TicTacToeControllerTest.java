@@ -2,9 +2,12 @@ package tictactoeweb.tictactoe;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -31,7 +34,8 @@ import tictactoeweb.schema.SchemaStore;
 
 public class TicTacToeControllerTest {
     private DataStore dataStore;
-    private String newGame = "{\"id\":1,\"playerX\":\"human\",\"playerO\":\"minimax\",\"board\":{\"player\":\"X\",\"x\":[],\"o\":[]},\"state\":\"inProgress\"}";
+    private final String newGame = "{\"id\":1,\"playerX\":\"human\",\"playerO\":\"minimax\",\"board\":{\"player\":\"X\",\"xs\":[],\"os\":[]},\"state\":\"inProgress\"}";
+    private final String game = "{\"id\":1,\"playerX\":\"human\",\"playerO\":\"minimax\",\"board\":{\"player\":\"O\",\"xs\":[\"center\"],\"os\":[]},\"state\":\"inProgress\"}";
 
     private TicTacToeController getController(Map<String, String> data) {
         this.dataStore = new MapDataStore(data);
@@ -80,6 +84,32 @@ public class TicTacToeControllerTest {
 
         assertThat(response.getHeader("Content-Type"), equalTo(Option.of("application/json")));
         assertThat(FileSystem.inputStreamToString(dataStore.fetch("/tictactoe/1.json")), equalTo(newGame));
+    }
+
+    @Test
+    public void itShouldPlayAPosition() throws DataStoreException, IOException {
+        final Map<String, String> data = HashMap.ofEntries(
+            Tuple.of("/tictactoe/1.json", newGame)
+        );
+        final TicTacToeController ticTacToeController = getController(data);
+        final Request request = new Request(Method.POST, new OriginForm("/tictactoe/1.json"));
+        request.setBody("{ \"position\": \"center\" }");
+        final Response response = ticTacToeController.play(request);
+
+        assertThat(response.getStatusCode(), equalTo(StatusCode.SEE_OTHER));
+        assertThat(response.getHeader("Location"), equalTo(Option.of("/tictactoe/1.json")));
+        assertThat(FileSystem.inputStreamToString(dataStore.fetch("/tictactoe/1.json")), equalTo(game));
+    }
+
+    @Test(expected=BadRequestHttpException.class)
+    public void itShould400WhenTryingToPlayAnInvalidMove() throws DataStoreException, IOException {
+        final Map<String, String> data = HashMap.ofEntries(
+            Tuple.of("/tictactoe/1.json", game)
+        );
+        final TicTacToeController ticTacToeController = getController(data);
+        final Request request = new Request(Method.POST, new OriginForm("/tictactoe/1.json"));
+        request.setBody("{ \"position\": \"center\" }");
+        final Response response = ticTacToeController.play(request);
     }
 
 }

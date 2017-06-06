@@ -53,6 +53,7 @@ public class TicTacToeWeb {
         final TicTacToeController ticTacToeController = new TicTacToeController(dataStore, schemaStore);
         app.get("/tictactoe", ticTacToeController::index);
         app.get("/tictactoe/*.json", ticTacToeController::get);
+        app.post("/tictactoe/*.json", ticTacToeController::play);
         app.post("/tictactoe", ticTacToeController::create);
 
         final SchemaController schemaController = new SchemaController(schemaStore);

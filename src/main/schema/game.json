@@ -6,6 +6,12 @@
       "href": "/tictactoe",
       "method": "POST",
       "schema": { "$ref": "/schema/create.json" }
+    },
+    {
+      "rel": "urn:jdesrosiers:tictactoe:play",
+      "href": "/tictactoe/{id}.json",
+      "method": "POST",
+      "schema": { "$ref": "/schema/play.json" }
     }
   ]
 }

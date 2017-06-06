@@ -69,7 +69,7 @@ Project Plan
 | AV  | IP  | CP  | SP  | Description |
 |:---:|:---:|:---:|:---:|-------------|
 |  X  |     |     | 1.5 | Play turn - Click board space to play
-|  X  |     |     | 1.5 | Play turn - API call to play turn
+|     |     |  X  | 1.5 | Play turn - API call to play turn
 
 **Legend:** *AV* => Available, *IP* => In Progress, *CP* => Completed, *SP* => Story Points
 
