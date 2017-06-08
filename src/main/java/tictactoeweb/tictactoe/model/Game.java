@@ -1,8 +1,11 @@
 package tictactoeweb.tictactoe.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import scala.Symbol;
 import tictactoe.TicTacToe;
 
+@JsonIgnoreProperties({ "player" })
 public class Game {
     private static final TicTacToe tictactoe = TicTacToe.classic();
 
@@ -51,5 +54,9 @@ public class Game {
 
     public String getState() {
         return state;
+    }
+
+    public String getPlayer() {
+        return board.player().name().equals("X") ? playerX : playerO;
     }
 }

@@ -7,12 +7,17 @@ import java.nio.file.Paths;
 
 import javaslang.control.Try;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 import com.github.fge.jsonschema.core.report.ProcessingReport;
 import com.github.fge.jsonschema.main.JsonSchema;
+
+import org.jparsec.Scanners;
+import org.jparsec.Parser;
+import org.jparsec.Parsers;
+import org.jparsec.error.ParserException;
 
 import org.flint.controller.Controller;
 import org.flint.datastore.DataStore;
@@ -22,11 +27,28 @@ import org.flint.request.Request;
 import org.flint.response.Response;
 import org.flint.response.StatusCode;
 
+import tictactoeui.classic.ClassicGame;
+import tictactoeui.MinimaxPlayer;
+import tictactoeui.Player;
+
 import json.Json;
 import tictactoeweb.schema.SchemaStore;
+import tictactoeweb.tictactoe.model.Board;
 import tictactoeweb.tictactoe.model.Game;
 
 public class TicTacToeController {
+    private static final tictactoeui.Game game = new ClassicGame();
+
+    private static final Parser<MinimaxPlayer> PARSER = Parsers.sequence(
+        Scanners.string("minimax"),
+        Parsers.sequence(
+            Scanners.isChar(','),
+            Scanners.INTEGER.map(Integer::valueOf),
+            (_1, depth) -> depth
+        ).optional(6),
+        (minimax, depth) -> new MinimaxPlayer(game, depth)
+    );
+
     private final Controller controller;
     private final DataStore dataStore;
     private final SchemaStore schemaStore;
@@ -67,14 +89,22 @@ public class TicTacToeController {
     }
 
     public Response play(final Request request) throws DataStoreException, IOException {
-        final String position = Json.parse(request.getBody()).at("/position").textValue();
-        final Game game = Json.parseAs(dataStore.fetch(request.getPath()), Game.class);
+        String position;
 
-        if (!game.canPlay(position)) {
-            throw new BadRequestHttpException();
+        final Game game = Json.parseAs(dataStore.fetch(request.getPath()), Game.class);
+        final JsonNode play = Json.parse(request.getBody());
+        final String playerType = game.getPlayer();
+
+        if (playerType.equals("human")) {
+            position = play.at("/position").textValue();
+            if (!game.canPlay(position)) {
+                throw new BadRequestHttpException();
+            }
         } else {
-            game.play(position);
+            position = PARSER.parse(playerType).getMove(game.getBoard()).name();
         }
+
+        game.play(position);
 
         return writeGame(request, request.getPath(), game);
     }

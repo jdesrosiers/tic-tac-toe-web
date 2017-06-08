@@ -34,6 +34,10 @@ public class Json {
         return mapper.readTree(subject);
     }
 
+    public static <T> T parseAs(JsonNode json, Class<T> type) throws IOException {
+        return mapper.treeToValue(json, type);
+    }
+
     public static <T> T parseAs(String json, Class<T> type) throws IOException {
         return mapper.readValue(json, type);
     }

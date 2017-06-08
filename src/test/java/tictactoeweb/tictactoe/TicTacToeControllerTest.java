@@ -2,11 +2,13 @@ package tictactoeweb.tictactoe;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.isOneOf;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,6 +18,7 @@ import javaslang.collection.HashMap;
 import javaslang.collection.Map;
 import javaslang.control.Option;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 
 import org.flint.datastore.DataStore;
@@ -30,6 +33,7 @@ import org.flint.response.Response;
 import org.flint.response.StatusCode;
 import org.util.FileSystem;
 
+import json.Json;
 import tictactoeweb.schema.SchemaStore;
 
 public class TicTacToeControllerTest {
@@ -93,7 +97,8 @@ public class TicTacToeControllerTest {
         );
         final TicTacToeController ticTacToeController = getController(data);
         final Request request = new Request(Method.POST, new OriginForm("/tictactoe/1.json"));
-        request.setBody("{ \"position\": \"center\" }");
+        request.setHeader("ContentType", "application/json");
+        request.setBody("{\"position\":\"center\"}");
         final Response response = ticTacToeController.play(request);
 
         assertThat(response.getStatusCode(), equalTo(StatusCode.SEE_OTHER));
@@ -104,12 +109,30 @@ public class TicTacToeControllerTest {
     @Test(expected=BadRequestHttpException.class)
     public void itShould400WhenTryingToPlayAnInvalidMove() throws DataStoreException, IOException {
         final Map<String, String> data = HashMap.ofEntries(
+            Tuple.of("/tictactoe/1.json", newGame)
+        );
+        final TicTacToeController ticTacToeController = getController(data);
+        final Request request = new Request(Method.POST, new OriginForm("/tictactoe/1.json"));
+        request.setHeader("ContentType", "application/json");
+        request.setBody("{\"position\":\"invalid\"}");
+        final Response response = ticTacToeController.play(request);
+    }
+
+    @Test
+    public void itShouldPlayWithMinimax() throws DataStoreException, IOException {
+        final Map<String, String> data = HashMap.ofEntries(
             Tuple.of("/tictactoe/1.json", game)
         );
         final TicTacToeController ticTacToeController = getController(data);
         final Request request = new Request(Method.POST, new OriginForm("/tictactoe/1.json"));
-        request.setBody("{ \"position\": \"center\" }");
+        request.setHeader("ContentType", "application/json");
+        request.setBody("{}");
         final Response response = ticTacToeController.play(request);
+
+        JsonNode body = Json.parse(dataStore.fetch("/tictactoe/1.json"));
+        assertThat(response.getStatusCode(), equalTo(StatusCode.SEE_OTHER));
+        assertThat(response.getHeader("Location"), equalTo(Option.of("/tictactoe/1.json")));
+        assertThat(body.at("/board/xs/0").asText(), isOneOf("topRight", "topMiddle", "topLeft", "middleRight", "center", "middleLeft", "bottomRight", "bottomMiddle", "bottomLeft"));
     }
 
 }

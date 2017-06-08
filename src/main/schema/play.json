@@ -9,6 +9,5 @@
         "bottomLeft", "bottomMiddle", "bottomRight"
       ]
     }
-  },
-  "required": ["position"]
+  }
 }
