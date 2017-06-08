@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.cobspec.controller.FileSystemController;
-import org.cobspec.controller.OptionsController;
+import org.flint.datastore.DataStore;
+import org.flint.datastore.FileSystemDataStore;
+import org.flint.controller.Controller;
+import org.flint.controller.OptionsController;
 import org.flint.Application;
 
 import flint.cors.CorsOptions;
@@ -13,6 +15,7 @@ import flint.cors.CorsMiddleware;
 import tictactoeweb.schema.SchemaStore;
 import tictactoeweb.tictactoe.TicTacToeController;
 import tictactoeweb.schema.SchemaController;
+import tictactoeweb.datastore.FileSystemWithIndexDataStore;
 
 public class TicTacToeWeb {
     private static final int DEFAULT_PORT = 5000;
@@ -45,8 +48,9 @@ public class TicTacToeWeb {
     }
 
     static Application ticTacToeApi(final Application app, final Path dataPath, final Path schemaPath) {
-        final SchemaStore schemaStore = new SchemaStore(schemaPath);
-        final TicTacToeController ticTacToeController = new TicTacToeController(dataPath, schemaStore);
+        final DataStore schemaStore = new FileSystemDataStore(schemaPath);
+        final DataStore dataStore = new FileSystemDataStore(dataPath);
+        final TicTacToeController ticTacToeController = new TicTacToeController(dataStore, schemaStore);
         app.get("/tictactoe", ticTacToeController::index);
         app.get("/tictactoe/*.json", ticTacToeController::get);
         app.post("/tictactoe", ticTacToeController::create);
@@ -68,8 +72,9 @@ public class TicTacToeWeb {
     }
 
     static Application serveWeb(final Application app, final Path webPath) {
-        final FileSystemController fileSystemController = new FileSystemController(webPath);
-        app.get("*", fileSystemController::get);
+        final DataStore dataStore = new FileSystemWithIndexDataStore(webPath);
+        final Controller controller = new Controller(dataStore);
+        app.get("*", controller::get);
 
         return app;
     }

@@ -11,7 +11,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import javaslang.control.Option;
 
-import org.cobspec.controller.OptionsController;
+import org.flint.controller.OptionsController;
 import org.flint.request.Method;
 import org.flint.request.OriginForm;
 import org.flint.request.Request;

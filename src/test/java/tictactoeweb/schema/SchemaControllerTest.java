@@ -5,13 +5,12 @@ import static org.hamcrest.Matchers.equalTo;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.nio.file.Paths;
-
+import javaslang.collection.HashMap;
 import javaslang.control.Option;
 
-import com.github.fge.jsonschema.core.exceptions.ProcessingException;
-
+import org.flint.datastore.DataStore;
+import org.flint.datastore.DataStoreException;
+import org.flint.datastore.MapDataStore;
 import org.flint.exception.NotFoundHttpException;
 import org.flint.request.Method;
 import org.flint.request.OriginForm;
@@ -24,12 +23,12 @@ public class SchemaControllerTest {
 
     @Before
     public void setUp() {
-        final SchemaStore schemaStore = new SchemaStore(Paths.get("src/test/resources"));
+        final DataStore schemaStore = new MapDataStore(HashMap.of("/schema/test.json", "{}"));
         this.schemaController = new SchemaController(schemaStore);
     }
 
     @Test
-    public void itShouldSetTheContentTypeToApplicationSchemaJson() throws IOException, ProcessingException {
+    public void itShouldSetTheContentTypeToApplicationSchemaJson() throws DataStoreException {
         final Request request = new Request(Method.GET, new OriginForm("/schema/test.json"));
         final Response response = schemaController.get(request);
 
@@ -37,7 +36,7 @@ public class SchemaControllerTest {
     }
 
     @Test(expected=NotFoundHttpException.class)
-    public void itShould404IfTheSchemaDoesntExist() throws IOException, ProcessingException {
+    public void itShould404IfTheSchemaDoesntExist() throws DataStoreException {
         final Request request = new Request(Method.GET, new OriginForm("/schema/notaschema.json"));
         schemaController.get(request);
     }

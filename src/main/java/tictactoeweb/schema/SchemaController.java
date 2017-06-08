@@ -1,33 +1,20 @@
 package tictactoeweb.schema;
 
-import java.io.IOException;
-import java.nio.file.Path;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.core.JsonProcessingException;
-
-import com.github.fge.jsonschema.core.exceptions.ProcessingException;
-
-import org.flint.exception.NotFoundHttpException;
+import org.flint.controller.Controller;
+import org.flint.datastore.DataStore;
+import org.flint.datastore.DataStoreException;
 import org.flint.request.Request;
 import org.flint.response.Response;
 
 public class SchemaController {
-    private final SchemaStore schemaStore;
+    private final Controller controller;
 
-    public SchemaController(final SchemaStore schemaStore) {
-        this.schemaStore = schemaStore;
+    public SchemaController(final DataStore schemaStore) {
+        this.controller = new Controller(schemaStore);
     }
 
-    public Response get(final Request request) throws IOException, ProcessingException {
-        if (!schemaStore.hasSchema(request.getPath())) {
-            throw new NotFoundHttpException();
-        }
-
-        final String schema = schemaStore.getString(request.getPath());
-
-        final Response response = Response.create();
-        response.setBody(schema);
+    public Response get(final Request request) throws DataStoreException {
+        Response response = controller.get(request);
         response.setHeader("Content-Type", "application/schema+json");
 
         return response;

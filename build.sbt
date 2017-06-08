@@ -6,6 +6,7 @@ version := "1.0"
 
 scalaVersion := "2.11.7"
 javacOptions += "-Xlint:deprecation"
+javacOptions += "-Xlint:unchecked"
 
 libraryDependencies ++= Seq(
   "com.github.fge" % "json-schema-validator" % "2.2.6",

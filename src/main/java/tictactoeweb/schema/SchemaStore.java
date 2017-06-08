@@ -1,9 +1,7 @@
 package tictactoeweb.schema;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.IOException;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -11,36 +9,35 @@ import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 import com.github.fge.jsonschema.main.JsonSchema;
 import com.github.fge.jsonschema.main.JsonSchemaFactory;
 
+import org.flint.datastore.DataStore;
+import org.flint.datastore.DataStoreException;
+
 import json.Json;
 
 public class SchemaStore {
-    private final Path storePath;
+    private DataStore dataStore;
     private final JsonSchemaFactory factory;
 
-    public SchemaStore(Path storePath) {
-        this.storePath = storePath;
+    public SchemaStore(DataStore dataStore) {
+        this.dataStore = dataStore;
         this.factory = JsonSchemaFactory.byDefault();
     }
 
-    public boolean hasSchema(String schemaIdentifier) {
-        return Files.exists(getPath(schemaIdentifier));
+    public JsonSchema fetchSchema(String identifier) throws DataStoreException, ProcessingException {
+        final InputStream is = dataStore.fetch(identifier);
+        try {
+            return factory.getJsonSchema(Json.parse(is));
+        } catch (IOException ioe) {
+            throw new DataStoreException(ioe);
+        }
     }
 
-    public JsonSchema getSchema(String schemaIdentifier) throws IOException, ProcessingException {
-        final InputStream is = Files.newInputStream(getPath(schemaIdentifier));
-        return factory.getJsonSchema(Json.parse(is));
-    }
-
-    public JsonNode getJson(String schemaIdentifier) throws IOException {
-        final InputStream is = Files.newInputStream(getPath(schemaIdentifier));
-        return Json.parse(is);
-    }
-
-    public String getString(String schemaIdentifier) throws IOException {
-        return new String(Files.readAllBytes(getPath(schemaIdentifier)));
-    }
-
-    private Path getPath(String schemaIdentifier) {
-        return storePath.resolve("." + schemaIdentifier);
+    public JsonNode fetchJson(String identifier) throws DataStoreException {
+        final InputStream is = dataStore.fetch(identifier);
+        try {
+            return Json.parse(is);
+        } catch (IOException ioe) {
+            throw new DataStoreException(ioe);
+        }
     }
 }
