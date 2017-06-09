@@ -18,6 +18,8 @@ define(["jquery", "lodash", "ldsh!board.lodash"], function ($, _, template) {
       return "X Wins!";
     } else if (game.state === "oWins") {
       return "O Wins!";
+    } else if (game.state === "draw") {
+      return "It's a Draw";
     } else {
       return "???";
     }
@@ -36,7 +38,22 @@ define(["jquery", "lodash", "ldsh!board.lodash"], function ($, _, template) {
     }, {});
   }
 
-  return function (game) {
-    return $(template({ heading: buildHeading(game), board: buildBoard(game) }));
+  return function (game, play) {
+    var $board = $(template({
+      heading: buildHeading(game),
+      state: game.state,
+      player: game.player,
+      board: buildBoard(game)
+    }));
+
+    if (game.state == "inProgress") {
+      if (game.player == "human") {
+        $board.find(".unplayed").click(play);
+      } else {
+        play();
+      }
+    }
+
+    return $board;
   }
 });

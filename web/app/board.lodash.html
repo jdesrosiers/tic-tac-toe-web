@@ -1,20 +1,20 @@
 <div class="header">
   <h1><%- heading %></h1>
-  <div class="container board">
+  <div class="container board <%= state %> <%= player %>">
     <div class="row boundry-bottom">
-      <div class="col-md-4 cell boundry-right"><img src="/img/<%= board.topLeft %>.png"></div>
-      <div class="col-md-4 cell boundry-right"><img src="/img/<%= board.topMiddle %>.png"></div>
-      <div class="col-md-4 cell"><img src="/img/<%= board.topRight %>.png"></div>
+      <div id="topLeft" class="col-md-4 cell boundry-right <%= board.topLeft %>"></div>
+      <div id="topMiddle" class="col-md-4 cell boundry-right <%= board.topMiddle %>"></div>
+      <div id="topRight" class="col-md-4 cell <%= board.topRight %>"></div>
     </div>
     <div class="row boundry-bottom">
-      <div class="col-md-4 cell boundry-right"><img src="/img/<%= board.middleLeft %>.png"></div>
-      <div class="col-md-4 cell boundry-right"><img src="/img/<%= board.center %>.png"></div>
-      <div class="col-md-4 cell"><img src="/img/<%= board.middleRight %>.png"></div>
+      <div id="middleLeft" class="col-md-4 cell boundry-right <%= board.middleLeft %>"></div>
+      <div id="center" class="col-md-4 cell boundry-right <%= board.center %>"></div>
+      <div id="middleRight" class="col-md-4 cell <%= board.middleRight %>"></div>
     </div>
     <div class="row">
-      <div class="col-md-4 cell boundry-right"><img src="/img/<%= board.bottomLeft %>.png"></div>
-      <div class="col-md-4 cell boundry-right"><img src="/img/<%= board.bottomMiddle %>.png"></div>
-      <div class="col-md-4 cell"><img src="/img/<%= board.bottomRight %>.png"></div>
+      <div id="bottomLeft" class="col-md-4 cell boundry-right <%= board.bottomLeft %>"></div>
+      <div id="bottomMiddle" class="col-md-4 cell boundry-right <%= board.bottomMiddle %>"></div>
+      <div id="bottomRight" class="col-md-4 cell <%= board.bottomRight %>"></div>
     </div>
   </div>
   <button id="new-game" type="button" class="btn btn-default">New Game</button>

@@ -57,13 +57,13 @@ public class GameTest {
     @Test
     public void itShouldBeSerializableToJson() throws JsonProcessingException {
         Game game = new Game("human", "minimax");
-        String json = "{\"id\":1,\"playerX\":\"human\",\"playerO\":\"minimax\",\"board\":{\"player\":\"X\",\"xs\":[],\"os\":[]},\"state\":\"inProgress\"}";
+        String json = "{\"id\":1,\"playerX\":\"human\",\"playerO\":\"minimax\",\"board\":{\"player\":\"X\",\"xs\":[],\"os\":[]},\"state\":\"inProgress\",\"player\":\"human\"}";
         assertThat(Json.stringify(game), equalTo(json));
     }
 
     @Test
     public void itShouldDeserializeJsonToAGame() throws IOException, JsonProcessingException {
-        String json = "{\"id\":1,\"playerX\":\"human\",\"playerO\":\"minimax\",\"board\":{\"player\":\"X\",\"xs\":[],\"os\":[]},\"state\":\"inProgress\"}";
+        String json = "{\"id\":1,\"playerX\":\"human\",\"playerO\":\"minimax\",\"board\":{\"player\":\"X\",\"xs\":[],\"os\":[]},\"state\":\"inProgress\",\"player\":\"human\"}";
         Game game = Json.parseAs(json, Game.class);
         assertThat(game.getId(), equalTo(1));
     }

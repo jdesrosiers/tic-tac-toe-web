@@ -18,7 +18,12 @@ requirejs(["jquery", "jsonary", "new-game-form", "board", "bootstrap"], function
   "use strict";
 
   var displayGame = function (game) {
-    var $board = board(game.value());
+    var playLink = game.getLink("urn:jdesrosiers:tictactoe:play");
+
+    var $board = board(game.value(), function () {
+      var message = this ? { position: this.id } : {};
+      playLink.follow(message, false).getData(displayGame);
+    });
 
     newGameForm(game.getLink("urn:jdesrosiers:tictactoe:create"), displayGame, function ($newGameForm) {
       $board.find("#new-game").click(function () {

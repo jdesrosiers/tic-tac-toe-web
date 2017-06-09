@@ -30,6 +30,20 @@ body {
 .cell {
   height: 135px;
   padding: 1em;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.inProgress.human .unplayed:hover {
+  background-color: aliceblue;
+}
+
+.X {
+  background-image: url("/img/X.png");
+}
+
+.O {
+  background-image: url("/img/O.png");
 }
 
 .boundry-right {
