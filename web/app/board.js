@@ -2,9 +2,9 @@ define(["jquery", "lodash", "ldsh!board.lodash"], function ($, _, template) {
   "use strict";
 
   var getToken = function (board, position) {
-    if (_.includes(board.x, position)) {
+    if (_.includes(board.xs, position)) {
       return "X";
-    } else if (_.includes(board.o, position)) {
+    } else if (_.includes(board.os, position)) {
       return "O";
     } else {
       return "unplayed";

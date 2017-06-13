@@ -2,13 +2,15 @@ package tictactoeweb;
 
 import java.nio.file.Path;
 
-class ApplicationOptions {
+import flint.cors.CorsOptions;
+
+class TicTacToeWebOptions {
     private Path dataPath;
     private Path schemaPath;
     private Path webPath;
     private CorsOptions cors;
 
-    private ApplicationOptions() { }
+    private TicTacToeWebOptions() { }
 
     public Path getDataPath() {
         return dataPath;
@@ -32,8 +34,8 @@ class ApplicationOptions {
         private Path webPath;
         private CorsOptions cors;
 
-        public ApplicationOptions build() {
-            ApplicationOptions options = new ApplicationOptions();
+        public TicTacToeWebOptions build() {
+            TicTacToeWebOptions options = new TicTacToeWebOptions();
             options.dataPath = dataPath;
             options.schemaPath = schemaPath;
             options.webPath = webPath;

@@ -4,9 +4,18 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.cobspec.controller.FileSystemController;
-import org.cobspec.controller.OptionsController;
+import org.flint.datastore.DataStore;
+import org.flint.datastore.FileSystemDataStore;
+import org.flint.controller.Controller;
+import org.flint.controller.OptionsController;
 import org.flint.Application;
+
+import flint.cors.CorsOptions;
+import flint.cors.CorsMiddleware;
+import tictactoeweb.schema.SchemaStore;
+import tictactoeweb.tictactoe.TicTacToeController;
+import tictactoeweb.schema.SchemaController;
+import tictactoeweb.datastore.FileSystemWithIndexDataStore;
 
 public class TicTacToeWeb {
     private static final int DEFAULT_PORT = 5000;
@@ -17,7 +26,7 @@ public class TicTacToeWeb {
             .exposeHeaders("Link,Location")
             .build();
 
-        final ApplicationOptions options = new ApplicationOptions.Builder()
+        final TicTacToeWebOptions options = new TicTacToeWebOptions.Builder()
             .dataPath(Paths.get("."))
             .schemaPath(Paths.get("src/main"))
             .webPath(Paths.get("web"))
@@ -28,7 +37,7 @@ public class TicTacToeWeb {
         build(options).run(port);
     }
 
-    static Application build(final ApplicationOptions options) {
+    static Application build(final TicTacToeWebOptions options) {
         final Application app = new Application();
 
         ticTacToeApi(app, options.getDataPath(), options.getSchemaPath());
@@ -39,10 +48,12 @@ public class TicTacToeWeb {
     }
 
     static Application ticTacToeApi(final Application app, final Path dataPath, final Path schemaPath) {
-        final SchemaStore schemaStore = new SchemaStore(schemaPath);
-        final TicTacToeController ticTacToeController = new TicTacToeController(dataPath, schemaStore);
+        final DataStore schemaStore = new FileSystemDataStore(schemaPath);
+        final DataStore dataStore = new FileSystemDataStore(dataPath);
+        final TicTacToeController ticTacToeController = new TicTacToeController(dataStore, schemaStore);
         app.get("/tictactoe", ticTacToeController::index);
         app.get("/tictactoe/*.json", ticTacToeController::get);
+        app.post("/tictactoe/*.json", ticTacToeController::play);
         app.post("/tictactoe", ticTacToeController::create);
 
         final SchemaController schemaController = new SchemaController(schemaStore);
@@ -62,8 +73,9 @@ public class TicTacToeWeb {
     }
 
     static Application serveWeb(final Application app, final Path webPath) {
-        final FileSystemController fileSystemController = new FileSystemController(webPath);
-        app.get("*", fileSystemController::get);
+        final DataStore dataStore = new FileSystemWithIndexDataStore(webPath);
+        final Controller controller = new Controller(dataStore);
+        app.get("*", controller::get);
 
         return app;
     }

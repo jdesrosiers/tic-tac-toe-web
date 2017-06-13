@@ -5,11 +5,14 @@ organization := "jdesrosiers"
 version := "1.0"
 
 scalaVersion := "2.11.7"
+javacOptions += "-Xlint:deprecation"
+javacOptions += "-Xlint:unchecked"
 
 libraryDependencies ++= Seq(
   "com.github.fge" % "json-schema-validator" % "2.2.6",
   "io.javaslang" % "javaslang" % "2.0.6",
-  "io.javaslang" % "javaslang-jackson" % "2.0.5",
+  "org.jparsec" % "jparsec" % "3.0",
+  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.8.8",
   "jdesrosiers" %% "http-server" % "1.0",
   "jdesrosiers" %% "tic-tac-toe" % "1.0",
 
