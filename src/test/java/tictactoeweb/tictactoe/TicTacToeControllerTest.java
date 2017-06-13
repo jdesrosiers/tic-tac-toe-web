@@ -38,8 +38,8 @@ import tictactoeweb.schema.SchemaStore;
 
 public class TicTacToeControllerTest {
     private DataStore dataStore;
-    private final String newGame = "{\"id\":1,\"playerX\":\"human\",\"playerO\":\"minimax\",\"board\":{\"player\":\"X\",\"xs\":[],\"os\":[]},\"state\":\"inProgress\"}";
-    private final String game = "{\"id\":1,\"playerX\":\"human\",\"playerO\":\"minimax\",\"board\":{\"player\":\"O\",\"xs\":[\"center\"],\"os\":[]},\"state\":\"inProgress\"}";
+    private final String newGame = "{\"id\":1,\"playerX\":\"human\",\"playerO\":\"minimax\",\"board\":{\"player\":\"X\",\"xs\":[],\"os\":[]},\"state\":\"inProgress\",\"player\":\"human\"}";
+    private final String game = "{\"id\":1,\"playerX\":\"human\",\"playerO\":\"minimax\",\"board\":{\"player\":\"O\",\"xs\":[\"center\"],\"os\":[]},\"state\":\"inProgress\",\"player\":\"minimax\"}";
 
     private TicTacToeController getController(Map<String, String> data) {
         this.dataStore = new MapDataStore(data);

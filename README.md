@@ -64,11 +64,11 @@ Project Plan
 ------------
 
 ### Current Sprint
-**From** 05-30-2017 **to** 06-01-2017
+**From** 06-05-2017 **to** 06-09-2017
 
 | AV  | IP  | CP  | SP  | Description |
 |:---:|:---:|:---:|:---:|-------------|
-|  X  |     |     | 1.5 | Play turn - Click board space to play
+|     |     |  X  | 1.5 | Play turn - Click board space to play
 |     |     |  X  | 1.5 | Play turn - API call to play turn
 
 **Legend:** *AV* => Available, *IP* => In Progress, *CP* => Completed, *SP* => Story Points

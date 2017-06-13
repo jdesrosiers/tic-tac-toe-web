@@ -45,7 +45,7 @@ public class TicTacToeController {
             Scanners.isChar(','),
             Scanners.INTEGER.map(Integer::valueOf),
             (_1, depth) -> depth
-        ).optional(6),
+        ).optional(8),
         (minimax, depth) -> new MinimaxPlayer(game, depth)
     );
 
