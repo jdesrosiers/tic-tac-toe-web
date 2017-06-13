@@ -59,25 +59,3 @@ The server takes one optional argument `[-p PORT]`.  Where `PORT` is the port th
 API
 ---
 The Tic Tac Toe API is driven by JSON Hyper-Schema.  You can browse the API by pointing you browser to the Jsonary JSON Browser.  [http://json-browser.s3-website-us-west-1.amazonaws.com/?url=http%3A//localhost%3A5000/tictactoe](http://json-browser.s3-website-us-west-1.amazonaws.com/?url=http%3A//localhost%3A5000/tictactoe)
-
-Project Plan
-------------
-
-### Current Sprint
-**From** 06-05-2017 **to** 06-09-2017
-
-| AV  | IP  | CP  | SP  | Description |
-|:---:|:---:|:---:|:---:|-------------|
-|     |     |  X  | 1.5 | Play turn - Click board space to play
-|     |     |  X  | 1.5 | Play turn - API call to play turn
-
-**Legend:** *AV* => Available, *IP* => In Progress, *CP* => Completed, *SP* => Story Points
-
-**Velocity:** 6 SP/Week
-
-### Backlog
-| SP  | Description |
-|:---:|-------------|
-| 3.75| Multiple Games - Add support for URL parameters to Flint
-| 1.5 | Multiple Games - UI for listing games
-| 2.75| Multiple Games - API call for listing games

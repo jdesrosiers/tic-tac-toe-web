@@ -8,7 +8,7 @@ cd tictactoe
 sbt publishLocal
 cd ..
 
-git clone -b gradle-is-lame https://github.com/jdesrosiers/http-server.git
+git clone https://github.com/jdesrosiers/http-server.git
 cd http-server
 sbt publishLocal
 cd ..
