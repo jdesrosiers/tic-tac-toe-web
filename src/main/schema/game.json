@@ -2,12 +2,6 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "links": [
     {
-      "rel": "urn:jdesrosiers:tictactoe:create",
-      "href": "/tictactoe",
-      "method": "POST",
-      "schema": { "$ref": "/schema/create.json" }
-    },
-    {
       "rel": "urn:jdesrosiers:tictactoe:play",
       "href": "/tictactoe/{id}.json",
       "method": "POST",

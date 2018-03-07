@@ -8,10 +8,6 @@
       "href": "/tictactoe",
       "method": "POST",
       "schema": { "$ref": "/schema/create.json" }
-    },
-    {
-      "rel": "urn:jdesrosiers:tictactoe:game",
-      "href": "/tictactoe/1.json"
     }
   ]
 }

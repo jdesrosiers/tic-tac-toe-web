@@ -18,21 +18,22 @@ requirejs(["jquery", "jsonary", "new-game-form", "board", "bootstrap"], function
   "use strict";
 
   var displayGame = function (game) {
-    var playLink = game.getLink("urn:jdesrosiers:tictactoe:play");
-
     var $board = board(game.value(), function () {
+      var play = game.getLink("urn:jdesrosiers:tictactoe:play");
       var message = this ? { position: this.id } : {};
-      playLink.follow(message, false).getData(displayGame);
+      play.follow(message, false).getData(displayGame);
     });
 
-    newGameForm(game.getLink("urn:jdesrosiers:tictactoe:create"), displayGame, function ($newGameForm) {
-      $board.find("#new-game").click(function () {
-        $("#content").html($newGameForm);
-      });
+    $board.find("#new-game").click(function () {
+      location.reload();
     });
 
     $("#content").html($board);
   }
 
-  Jsonary.getData("/tictactoe/1.json", displayGame);
+  Jsonary.getData("/tictactoe", function (index) {
+    newGameForm(index.getLink("urn:jdesrosiers:tictactoe:create"), displayGame, function ($newGameForm) {
+      $("#content").html($newGameForm);
+    });
+  });
 });
