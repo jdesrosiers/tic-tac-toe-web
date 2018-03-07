@@ -38,7 +38,9 @@ define(["jquery", "lodash", "ldsh!board.lodash"], function ($, _, template) {
     }, {});
   }
 
-  return function (game, play) {
+  return function (props) {
+    var game = props.game;
+
     var $board = $(template({
       heading: buildHeading(game),
       state: game.state,
@@ -48,11 +50,13 @@ define(["jquery", "lodash", "ldsh!board.lodash"], function ($, _, template) {
 
     if (game.state == "inProgress") {
       if (game.player == "human") {
-        $board.find(".unplayed").click(play);
+        $board.find(".unplayed").click(props.onPlay);
       } else {
-        play();
+        props.onPlay();
       }
     }
+
+    $board.find("#new-game").click(props.onNewGame);
 
     return $board;
   }

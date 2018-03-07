@@ -19,7 +19,7 @@ Because the dependent projects are not in a public package repository, they need
 You can build the project with sbt.  Build artifacts will be in in `./target/scala-2.11`.
 
 ```shell
-> sbt build
+> sbt compile
 ```
 
 Or, build a standalone jar at `./target/scala-2.11/tic-tac-toe-web-assembly-1.0.jar`.

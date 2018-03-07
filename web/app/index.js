@@ -17,22 +17,29 @@ requirejs.config({
 requirejs(["jquery", "jsonary", "new-game-form", "board", "bootstrap"], function ($, Jsonary, newGameForm, board) {
   "use strict";
 
-  var displayGame = function (game) {
-    var $board = board(game.value(), function () {
-      var play = game.getLink("urn:jdesrosiers:tictactoe:play");
-      var message = this ? { position: this.id } : {};
-      play.follow(message, false).getData(displayGame);
-    });
+  var API_HOME = "/tictactoe";
 
-    $board.find("#new-game").click(function () {
-      location.reload();
+  var displayGame = function (game) {
+    var play = game.getLink("urn:jdesrosiers:tictactoe:play");
+
+    var $board = board({
+      game: game.value(),
+      onPlay: function () {
+        var message = this ? { position: this.id } : {};
+        play.follow(message, false).getData(displayGame);
+      },
+      onNewGame: function () {
+        location.reload();
+      }
     });
 
     $("#content").html($board);
-  }
+  };
 
-  Jsonary.getData("/tictactoe", function (index) {
-    newGameForm(index.getLink("urn:jdesrosiers:tictactoe:create"), displayGame, function ($newGameForm) {
+  Jsonary.getData(API_HOME, function (index) {
+    var create = index.getLink("urn:jdesrosiers:tictactoe:create");
+
+    newGameForm(create, displayGame, function ($newGameForm) {
       $("#content").html($newGameForm);
     });
   });
